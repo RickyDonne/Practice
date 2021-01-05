@@ -7,49 +7,112 @@ typedef struct node
     struct node *next;
 } link;
 
-void addToEmpty(link **last, int data);
-void traverse(link *last);
+void print_list (link *last);
+void addtoempty (link **last, int data);
+void addafter (link **last, int data, int key);
+void addBegin (link **last, int data);
+void addend (link **last, int data);
 
-int main ()
+int main()
 {
     link *last = NULL;
 
-    addToEmpty(&last, 10);
-
-
-    traverse(last);
+    addtoempty(&last, 10);
+    addBegin(&last, 5);
+    addend(&last, 20);
+    addafter(&last, 15, 10);
+    print_list(last);
 
     return 0;
 }
 
-void traverse(link *last)
+void addafter(link **last, int data, int key)
 {
-    link *p;
-
-    if (last == NULL)
+    if (*last == NULL)
     {
-        printf("List is empty.");
+        printf("List is empty!\n");
         return;
     }
 
-    p = last -> next;
+    link *temp, *p;
+    p = (*last)->next;
     do
-    {next
-        printf("%d->", p->data);
-        p = p -> next;
+    {
+        if (p->data == key)
+        {
+            temp = (link*)malloc(sizeof(link));
+            temp->data = data;
+            temp->next = p->next;
+            p->next = temp;
 
+            if (p == *last)
+                *last = temp;
+        }
+        p = p->next;
     }
-    while(p != last->next);
+    while (p != (*last)->next);
+    printf("Not present in the list!\n");
+}
+
+void addend(link **last, int data)
+{
+    if (last == NULL)
+    {
+        printf("List is empty!\n");
+        return;
+    }
+
+    link *new_node = (link*)malloc(sizeof(link));
+    new_node->data = data;
+    new_node->next = (*last)->next;
+    (*last)->next = new_node;
+    *last = new_node;
+}
+
+void addBegin(link **last, int data)
+{
+    if (last == NULL)
+    {
+        printf("List is empty!\n");
+        return;
+    }
+
+    link *new_node = (link*)malloc(sizeof(link));
+    new_node->data = data;
+    new_node->next = (*last)->next;
+    (*last)->next = new_node;
+}
+
+void print_list(link *last)
+{
+    link *head;
+
+    if (last == NULL)
+    {
+        printf("List is empty!\n");
+        return;
+    }
+
+    head = last->next;
+    printf("CLL is: ");
+    do
+    {
+        printf("%d->", head->data);
+        head = head->next;
+    }
+    while (head != last->next);
     printf("NULL\n");
 }
 
-void addToEmpty(link **last, int data)
+void addtoempty(link **last, int data)
 {
-    if (*last != NULL)
-      return;
-
-    link *temp =(link*)malloc(sizeof(link));
-    temp -> data = data;
-    *last = temp;
+    if (last == NULL)
+    {
+        printf("List is empty!\n");
+        return;
+    }
+    link *new_node = (link*)malloc(sizeof(link));
+    new_node->data = data;
+    (*last) = new_node;
     (*last)->next = (*last);
 }
